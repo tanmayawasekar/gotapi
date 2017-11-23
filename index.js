@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const compression = require('compression');
 const helmet = require('helmet');
 const app = express();
+require('./config/config');
+require('./config/dbConfig'); // Importing database connection when server starts
 const routes = require('./routes/routes');
 
 //Security Middleware
@@ -10,8 +12,6 @@ app.use(helmet());
 
 app.set('port', 3000);
 
-require('./config/config');
-require('./config/dbConfig'); // Importing database connection when server starts
 
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
