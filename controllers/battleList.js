@@ -41,3 +41,43 @@ exports.totalBattles = (req, res) => {
       res.status(500).send('Internal Server Error');
     });
 };
+
+/*  db.getCollection('battles').aggregate([{
+    "$group": {
+      "_id": "1",
+      "battle_type": {
+        "$addToSet": "$battle_type"
+      },
+      "average": {
+        "$avg": "$defender_size"
+      },
+      "min": {
+        "$min": "$defender_size"
+      },
+      "max": {
+        "$max": "$defender_size"
+      },
+      totalAttackersLoss: {
+        $push: {
+          $cond: {
+            if: {
+              $eq: ["$attacker_outcome", "loss"]
+            },
+            then: "$attacker_outcome",
+            else: null,
+          }
+        }
+      },
+       totalAttackersWin: {
+        $push: {
+          $cond: {
+            if: {
+              $eq: ["$attacker_outcome", "win"]
+            },
+            then: "$attacker_outcome",
+            else: null,
+          }
+        }
+      }
+    }
+  }]) */
