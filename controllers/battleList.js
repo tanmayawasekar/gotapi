@@ -27,7 +27,7 @@ exports.getBattleLocation = (req, res) => {
 
 // Get total battles faught
 exports.totalBattles = (req, res) => {
-  global
+/*   global
     .db.collection('battleLists').find({})
     .sort({
       'battle_number': -1
@@ -39,7 +39,26 @@ exports.totalBattles = (req, res) => {
     }))
     .catch(error => {
       res.status(500).send('Internal Server Error');
-    });
+    }); */
+  var mapper = function () {
+    emit(this.attacker_king, 1);
+  };
+
+  var reducer = function (battle_number, count) {
+    return battle_number;
+  };
+  global
+    .db.collection('battleLists').mapReduce(
+    mapper,
+    reducer,
+    {
+      out: { inline: 1 }
+    }
+  ).then(data => {
+ console.log("data ", data);
+    res.send(data);
+    }).catch(error => res.send(error));
+  
 };
 
 /*  db.getCollection('battles').aggregate([{
