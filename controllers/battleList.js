@@ -24,3 +24,20 @@ exports.getBattleLocation = (req, res) => {
       res.status(500).send('Internal Server Error');
     });
 };
+
+// Get total battles faught
+exports.totalBattles = (req, res) => {
+  global
+    .db.collection('battleLists').find({})
+    .sort({
+      'battle_number': -1
+    })
+    .limit(1)
+    .toArray()
+    .then(totlaBattle => res.send({
+      'totlaBattle': totlaBattle[0] && totlaBattle[0].battle_number || 0
+    }))
+    .catch(error => {
+      res.status(500).send('Internal Server Error');
+    });
+};

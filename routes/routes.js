@@ -9,4 +9,6 @@ router.get('/',function (req, res) {
 
 router.get('/list', dependencies.battleList.getBattleLocation);
 
+router.get('/count', dependencies.battleList.totalBattles);
+
 module.exports = router;
