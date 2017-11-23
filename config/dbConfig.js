@@ -1,46 +1,10 @@
-//Bring in the mongoose module
-const mongoose = require('mongoose');
-
-// User define module
+const MongoClient = require('mongodb').MongoClient;
 const config = require('./config');
+const url = config.db.url + config.db.name || 'mongodb://localhost:27017/';
 
-const dbURI = config.db.url + config.db.name;
- console.log("dbURI ", dbURI);
-
-// Use native promises
-mongoose.Promise = global.Promise;
-
-//console to check what is the dbURI refers to
-console.log("Database URL is =>>", dbURI);
-
-//Open the mongoose connection to the database
-mongoose.connect(dbURI, {
-  'config': {
-    'autoIndex': false
-  }
+global.db = MongoClient.connect(url);
+global.db.then((db, err) => {
+  global.db = db;
 });
-
-// Db Connection
-const db = mongoose.connection;
-
-db.on('connected', function () {
-  console.log('Mongoose connected to ' + dbURI);
-});
-
-db.on('error', function (err) {
-  console.log('Mongoose connection error: ' + err);
-});
-
-db.on('disconnected', function () {
-  console.log('Mongoose disconnected');
-});
-
-process.on('SIGINT', function () {
-  db.close(function () {
-    console.log('Mongoose disconnected through app termination');
-    process.exit(0);
-  });
-});
-
 //Exported the database connection to be imported at the server
-exports.default = db;
+exports.default = global.db;

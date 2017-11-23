@@ -12,7 +12,6 @@ app.use(helmet());
 
 app.set('port', 3000);
 
-
 app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "Origin, Authorization, X-Requested-With, Content-Type, Accept");
