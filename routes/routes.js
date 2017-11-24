@@ -11,4 +11,6 @@ router.get('/list', dependencies.battleList.getBattleLocation);
 
 router.get('/count', dependencies.battleList.totalBattles);
 
+router.get('/stats', dependencies.battleList.getBattleStats);
+
 module.exports = router;
