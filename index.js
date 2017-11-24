@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({ 'extended': true }));
 app.use(compression());
 
 //Handles routes in the app
-app.use('/api', routes);
+app.use('/', routes);
 
 // When route is not found error messege is thrown
 app.use('/', function (req, res) {

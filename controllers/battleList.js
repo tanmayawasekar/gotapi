@@ -1,3 +1,5 @@
+const utils = require('../helpers/utils');
+
 // Get the list of battle location
 exports.getBattleLocation = (req, res) => {
   global
@@ -201,21 +203,25 @@ exports.getBattleStats = (req, res) => {
 exports.searchBattle = (req, res) => {
   const query = req.query || {};
   for (let key in query) {
-    if (query[key].match(/^\d+$/)) {
+    if (utils.validateNumberInString(query[key])) {
       query[key] = Number(query[key]);
     }
 
     if (key === 'king') {
       query['$or'] = query['$or'] || [];
       query['$or'].push({
-        'defender_king': query[key]
+        'defender_king': utils.createSearchQuery(query[key])
       }, {
-        'attacker_king': query[key]
+        'attacker_king': utils.createSearchQuery(query[key])
       });
       delete query[key];
     }
+
+    if(typeof query[key] === 'string') {
+      query[key] = utils.createSearchQuery(query[key]);
+    }
   }
-  console.log("query ", query);
+
   global
     .db.collection('battleLists').find(query)
     .toArray()
