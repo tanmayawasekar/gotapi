@@ -196,3 +196,31 @@ exports.getBattleStats = (req, res) => {
       res.status(500).send('Internal Server Error');
     });
 };
+
+// Get total battles faught
+exports.searchBattle = (req, res) => {
+  const query = req.query || {};
+  for (let key in query) {
+    if (query[key].match(/^\d+$/)) {
+      query[key] = Number(query[key]);
+    }
+
+    if (key === 'king') {
+      query['$or'] = query['$or'] || [];
+      query['$or'].push({
+        'defender_king': query[key]
+      }, {
+        'attacker_king': query[key]
+      });
+      delete query[key];
+    }
+  }
+  console.log("query ", query);
+  global
+    .db.collection('battleLists').find(query)
+    .toArray()
+    .then(totlaBattle => res.send(totlaBattle))
+    .catch(error => {
+      res.status(500).send('Internal Server Error');
+    });
+};
